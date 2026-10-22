@@ -32,6 +32,6 @@ for (const file of ['README.md', ...fs.readdirSync(path.join(root, 'docs')).filt
     assert.ok(fs.existsSync(resolved), `${file} 引用了缺失文件：${target}`);
   }
 }
-assert.match(fs.readFileSync(path.join(root, 'README.md'), 'utf8'), /https://lpddog.github.io/TradeGuard//);
+assert.ok(fs.readFileSync(path.join(root, 'README.md'), 'utf8').includes('https://lpddog.github.io/TradeGuard/'));
 console.log(`通过：${references.length} 个相对资源、${scripts.length} 个脚本语法、文档内部链接和静态发布标记。`);
 console.log('路径检查不代表真实 GitHub Pages 已部署；PDF 成品仍待验收。');
