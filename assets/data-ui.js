@@ -1,7 +1,7 @@
 'use strict';
 let pendingImport = null;
 function dataToolbar() {
-  return `<section class="panel data-panel"><div><h2>数据管理</h2><p>导出全部订单用于备份；导入仅追加，不覆盖已有编号。只使用虚构资料。</p></div><div class="data-actions"><button class="button secondary" id="export-csv">导出全部 CSV</button><button class="button secondary" id="download-template">下载 CSV 模板</button><label class="button secondary file-button">选择 CSV 导入<input id="import-csv" type="file" accept=".csv,text/csv" aria-label="选择 CSV 导入"></label><button class="button secondary" id="restore-demo">恢复演示数据</button></div><p class="storage-hint">UTF-8 CSV，最多 2 MB / 2000 条；订单编号可留空自动生成。与现有编号重复将整批拒绝。筛选不影响导出范围。</p><p id="data-message" class="error-message" role="alert"></p></section>`;
+  return `<section class="panel data-panel"><div><h2>数据管理</h2></div><div class="data-actions"><button class="button secondary" id="export-csv">导出全部 CSV</button><button class="button secondary" id="download-template">下载 CSV 模板</button><label class="button secondary file-button">选择 CSV 导入<input id="import-csv" type="file" accept=".csv,text/csv" aria-label="选择 CSV 导入"></label><button class="button secondary" id="restore-demo">恢复演示数据</button></div><p class="storage-hint">UTF-8 CSV，最多 2 MB / 2000 条；订单编号可留空自动生成。与现有编号重复将整批拒绝。筛选不影响导出范围。</p><p id="data-message" class="error-message" role="alert"></p></section>`;
 }
 function downloadCSV(content, filename) {
   const url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' }));

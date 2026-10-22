@@ -8,7 +8,7 @@ function boot(withChart = true) {
   const created = [];
   const nodes = new Map();
   const el = id => { if (!nodes.has(id)) nodes.set(id, { innerHTML: '', textContent: '', hidden: true, listeners: {}, setAttribute() {}, focus() {}, addEventListener(event, cb) { this.listeners[event] = cb; } }); return nodes.get(id); };
-  class Chart { constructor(canvas, config) { this.canvas = canvas; this.config = config; this.destroyed = false; created.push(this); } destroy() { this.destroyed = true; } }
+  class Chart { constructor(canvas, config) { this.canvas = canvas; this.config = config; this.destroyed = false; created.push(this); } destroy() { this.destroyed = true; } resize() { this.resized = true; } }
   const storage = new Map();
   const ctx = vm.createContext({ crypto, Intl, URLSearchParams, setTimeout, clearTimeout, ...(withChart ? { Chart } : {}), location: { hash: '' }, localStorage: { getItem: k => storage.get(k) ?? '[]', setItem: (k,v) => storage.set(k,v) }, document: { getElementById: el, querySelectorAll: () => [], addEventListener() {}, body: { classList: { remove() {} } } }, window: { addEventListener() {} } });
   for (const file of ['orders', 'risk', 'app', 'risk-ui', 'dashboard', 'csv', 'data-ui', 'order-ui']) vm.runInContext(fs.readFileSync(`assets/${file}.js`, 'utf8'), ctx);
@@ -74,4 +74,15 @@ test('本地Chart.js固定版本加载、所有脚本使用存在的相对路径
   sources.forEach(path => assert.ok(fs.existsSync(path), path));
   assert.ok(html.indexOf('vendor/chart.umd.min.js') < html.indexOf('assets/dashboard.js'));
   assert.ok(fs.existsSync('assets/vendor/Chart.js-LICENSE.md'));
+});
+test('分析图表按需切换，一次仅展示选定图表并调整画布尺寸', () => {
+  const app = boot();
+  app.el('chart-view').listeners.change({ target: { value: 'risk' } });
+  assert.equal(app.el('risk-panel').hidden, false);
+  assert.equal(app.el('monthly-panel').hidden, true);
+  assert.equal(app.el('payment-panel').hidden, true);
+  assert.ok(app.created.slice(-3).every(c => c.resized));
+  app.el('chart-view').listeners.change({ target: { value: 'payment' } });
+  assert.equal(app.el('risk-panel').hidden, true);
+  assert.equal(app.el('payment-panel').hidden, false);
 });

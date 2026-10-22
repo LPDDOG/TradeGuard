@@ -37,6 +37,10 @@
 
 本地文件模式的存储行为取决于浏览器；最终展示建议使用稳定的 GitHub Pages 地址。部署后访问者各自使用自己的浏览器存储，不会修改作者或其他访问者的数据。
 
+## 界面组织
+
+采用轻量列表式布局：统计以分隔线分组，订单以表格为主体，报告与规则以纵向清单组织，减少圆角容器及重复装饰。首页默认展示月度金额趋势，风险与付款方式分布通过“选择分析图表”切换，同一时间只显示一种分析。
+
 ## 技术方案
 
 - 原生 HTML、CSS、JavaScript，无框架、无构建步骤、无后端和数据库。
@@ -79,7 +83,7 @@ node --test tests/orders.test.cjs tests/risk.test.cjs tests/dashboard.test.cjs t
 node scripts/check-release.cjs
 ```
 
-20 组功能自动化测试通过，覆盖评分边界、135 种规则组合、订单增删改查与刷新加载、图表汇总、异常 CSV、存储失败、旧标签页冲突及输入转义。自动化页面测试使用模拟 DOM、存储和图表实例。
+21 组功能自动化测试通过，覆盖评分边界、135 种规则组合、订单增删改查与刷新加载、图表汇总、异常 CSV、存储失败、旧标签页冲突及输入转义。自动化页面测试使用模拟 DOM、存储和图表实例。
 
 真实内置浏览器已检查本地 `/tradeguard/` 子路径、实际图表绘制、订单新增编辑删除、刷新保留、CSV 下载及导入、320px / 390px / 768px 布局与双标签页写入冲突。完整记录见 [验收记录](docs/QA.md)。未验证所有设备、Safari、Android 浏览器或 PDF 成品。正式 GitHub Pages 地址的首页、相对资源加载与看板已验证。
 
@@ -95,7 +99,7 @@ node scripts/check-release.cjs
 index.html                 入口与应用外壳
 .nojekyll                  GitHub Pages 静态发布标记
 assets/
-  styles.css               界面、响应式及打印样式
+  styles.css / refined.css 基础样式与简洁列表式视觉、响应式及打印样式
   orders.js                订单验证、演示数据和持久化
   risk.js                  集中风险规则与计算
   app.js                   公共内容

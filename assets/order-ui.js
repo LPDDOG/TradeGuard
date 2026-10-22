@@ -13,7 +13,7 @@ function dashboard() {
   const data = DashboardData.build(orders, dashboardYear);
   const high = data.high;
   const total = data.total;
-  return heading('RISK INTELLIGENCE', '让每一笔跨境订单，风险可见。', '从订单信息出发，建立透明、可解释的风险复核流程。', '<a class="button primary" href="#assessment">＋ 新建风险评估</a>') + phaseNotice + `<div class="stats"><article class="stat"><div>订单总数量<span class="stat-icon">▤</span></div><strong>${orders.length}<span>笔</span></strong><small>本浏览器已保存订单</small></article><article class="stat"><div>订单总金额<span class="stat-icon">＄</span></div><strong>${money(total)}</strong><small>计价币种 USD</small></article><article class="stat"><div>高风险订单</div><strong>${high}<span>笔</span></strong><small>建议优先人工复核</small></article><article class="stat"><div>高风险占比</div><strong>${orders.length ? (high / orders.length * 100).toFixed(1) : '0.0'}<span>%</span></strong><small>占全部订单的比例</small></article></div>${dashboardChartsHTML(data)}<section class="panel"><div class="panel-heading"><div><h2>近期订单</h2><p>按创建日期倒序 · 最近 6 笔</p></div><a class="text-link" href="#orders">查看全部订单 →</a></div>${orderTable(OrderStore.filter().slice(0, 6))}</section>`;
+  return heading('RISK INTELLIGENCE', '风险总览', '查看订单表现，优先复核值得关注的交易。', '<a class="button primary" href="#assessment">＋ 新建风险评估</a>') + phaseNotice + `<div class="stats"><article class="stat"><div>订单总数量</div><strong>${orders.length}<span>笔</span></strong><small>本浏览器已保存订单</small></article><article class="stat"><div>订单总金额</div><strong>${money(total)}</strong><small>计价币种 USD</small></article><article class="stat"><div>高风险订单</div><strong>${high}<span>笔</span></strong><small>建议优先人工复核</small></article><article class="stat"><div>高风险占比</div><strong>${orders.length ? (high / orders.length * 100).toFixed(1) : '0.0'}<span>%</span></strong><small>占全部订单的比例</small></article></div>${dashboardChartsHTML(data)}<section class="panel"><div class="panel-heading"><div><h2>近期订单</h2><p>按创建日期倒序 · 最近 6 笔</p></div><a class="text-link" href="#orders">查看全部订单 →</a></div>${orderTable(OrderStore.filter().slice(0, 6))}</section>`;
 }
 function ordersPage() {
   const countries = [...new Set(OrderStore.getAll().map(o => o.country))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
@@ -49,6 +49,10 @@ function render() {
   if (page === 'dashboard') {
     const data = DashboardData.build(OrderStore.getAll(), dashboardYear);
     DashboardCharts.mount(data);
+    document.getElementById('chart-view').addEventListener('change', e => {
+      for (const key of ['monthly', 'risk', 'payment']) document.getElementById(key + '-panel').hidden = key !== e.target.value;
+      DashboardCharts.resize();
+    });
     document.getElementById('trend-year').addEventListener('change', e => { dashboardYear = e.target.value; render(); document.getElementById('trend-year').focus(); });
   }
   document.getElementById('main').setAttribute('data-print-report', String(page === 'reports' && OrderStore.getAll().some(o => o.id === new URLSearchParams(location.hash.split('?')[1] || '').get('id'))));
