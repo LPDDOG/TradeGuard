@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-2026-10-22：本地静态项目、相对资源路径、.nojekyll、README、使用说明与验收记录已准备。源码已提交并上传至 https://github.com/LPDDOG/TradeGuard 的 main 分支；GitHub Pages 尚未启用或验证。PDF 成品仍待普通浏览器验收。
+2026-10-22：本地静态项目、相对资源路径、.nojekyll、README、使用说明与验收记录已准备。源码已提交并上传至 https://github.com/LPDDOG/TradeGuard 的 main 分支；GitHub Pages 已成功发布至 https://lpddog.github.io/TradeGuard/ ，首页及全部运行资源返回 200；已在浏览器确认看板和演示数据，完整线上业务流程仍需进一步验收。PDF 成品仍待普通浏览器验收。
 
 本文件是参考说明，不要求初学者一次完成所有操作。与 Codex 协作时，先提供目标 GitHub 仓库链接，再逐步完成后续操作，无需手写代码。
 

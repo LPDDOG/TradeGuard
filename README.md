@@ -2,7 +2,9 @@
 
 面向合规、外贸、风控与运营实习申请的个人作品集：将客户与订单信息整理为可解释的风险评分、可视化看板和人工复核报告，展示利用 AI 辅助工具实现业务流程的实践。
 
-**状态：本地功能已实现，部署材料已准备；尚未发布到 GitHub Pages。报告打印入口已实现，实际 PDF 成品尚未验收。**
+**状态：已发布到 GitHub Pages，首页及全部运行资源验证通过；实际 PDF 成品尚未验收。**
+
+[打开在线演示](https://lpddog.github.io/TradeGuard/) · [GitHub 源码](https://github.com/LPDDOG/TradeGuard)
 
 全部客户与订单均为虚构。系统仅模拟业务流程，不代表真实企业信用评级标准，不具备客户征信、制裁筛查或法律合规判断能力。
 
@@ -79,11 +81,11 @@ node scripts/check-release.cjs
 
 20 组功能自动化测试通过，覆盖评分边界、135 种规则组合、订单增删改查与刷新加载、图表汇总、异常 CSV、存储失败、旧标签页冲突及输入转义。自动化页面测试使用模拟 DOM、存储和图表实例。
 
-真实内置浏览器已检查本地 `/tradeguard/` 子路径、实际图表绘制、订单新增编辑删除、刷新保留、CSV 下载及导入、320px / 390px / 768px 布局与双标签页写入冲突。完整记录见 [验收记录](docs/QA.md)。未验证所有设备、Safari、Android 浏览器、真实 GitHub Pages 地址或 PDF 成品。
+真实内置浏览器已检查本地 `/tradeguard/` 子路径、实际图表绘制、订单新增编辑删除、刷新保留、CSV 下载及导入、320px / 390px / 768px 布局与双标签页写入冲突。完整记录见 [验收记录](docs/QA.md)。未验证所有设备、Safari、Android 浏览器或 PDF 成品。正式 GitHub Pages 地址的首页、相对资源加载与看板已验证。
 
 ## GitHub Pages 部署
 
-本项目无需构建。推荐发布源为 `main` 分支的仓库根目录；`index.html` 和 `assets/` 必须保持同级。源码已上传至 [LPDDOG/TradeGuard](https://github.com/LPDDOG/TradeGuard) 的 main 分支；GitHub Pages 尚未启用或验证，文档中没有虚构线上演示链接。
+本项目无需构建。推荐发布源为 `main` 分支的仓库根目录；`index.html` 和 `assets/` 必须保持同级。源码已上传至 [LPDDOG/TradeGuard](https://github.com/LPDDOG/TradeGuard) 的 main 分支；GitHub Pages 已发布：https://lpddog.github.io/TradeGuard/ 。正式首页和全部运行资源已验证；发布后的完整业务流程仍需进一步验收。
 
 [部署指南](docs/DEPLOYMENT.md)记录了准备情况、GitHub Pages 设置和发布后验收。该指南是备用参考；实际协作时逐步完成，不需要一次执行所有步骤。
 
