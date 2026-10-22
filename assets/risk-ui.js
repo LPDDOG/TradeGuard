@@ -1,0 +1,17 @@
+'use strict';
+function riskRulesPage() {
+  const config = RiskEngine.config;
+  let min = 0;
+  const levels = config.levels.map(l => { const html = `<span class="badge ${l.key}">${l.label} · ${min}—${l.max} 分</span>`; min = l.max + 1; return html; }).join('');
+  return heading('TRANSPARENT BY DESIGN', '评分规则说明', `${config.version} · 计算结果与本页使用同一份规则。`) + phaseNotice + `<div class="rules-grid">${config.groups.map((g, i) => `<section class="panel rule-card"><span class="rule-number">0${i + 1}</span><h2>${g.title}</h2><ul>${g.bands.map(b => `<li>${b.label}：${b.points} 分</li>`).join('')}</ul></section>`).join('')}</div><section class="panel thresholds"><h2>四项分数相加，最高限制为 ${config.cap} 分</h2><div>${levels}</div><p class="muted">合作年限按非负整数填写。国家或地区、客户名称、日期及备注不参与评分。规则仅模拟业务流程，不代表真实企业信用评级标准。</p></section>`;
+}
+function reportsPage() {
+  const rows = OrderStore.filter();
+  const id = new URLSearchParams(location.hash.split('?')[1] || '').get('id');
+  const order = rows.find(o => o.id === id);
+  const head = heading('EXPLAINABLE RISK', '风险评估详情', '查看评分依据与人工复核建议，可打印或通过浏览器保存为 PDF。');
+  if (!order) return head + phaseNotice + (id ? '<div class="notice">该订单不存在或已删除，请重新选择。</div>' : '') + `<section class="panel"><div class="panel-heading"><div><h2>选择订单查看评估</h2><p>按最新订单信息即时计算。</p></div></div>${orderTable(rows)}</section>`;
+  const result = RiskEngine.evaluate(order);
+  const list = entries => `<ul class="review-list">${entries.map(e => `<li><strong>${escapeHTML(e.title)}</strong><p>${escapeHTML(e.text)}</p></li>`).join('')}</ul>`;
+  return `<div class="print-title"><h1>TradeGuard｜订单风险评估报告</h1><p>模拟业务流程 · 不代表真实企业信用评级，不构成法律或授信意见。</p></div>` + head + phaseNotice + `<div class="report-toolbar"><a class="text-link" href="#reports">← 返回评估列表</a><div class="data-actions"><button class="button secondary" data-edit="${order.id}">编辑此订单</button><button class="button primary" id="print-report">打印 / 保存 PDF</button></div></div><section class="panel score-summary"><div><p class="eyebrow">${result.version}</p><h2>${escapeHTML(order.name)}</h2><p>${escapeHTML(order.id)} · 评估生成日期：${OrderStore.today()}</p></div><div class="score-value"><strong>${result.score}<small> / ${RiskEngine.config.cap}</small></strong>${badge(result)}</div></section><section class="panel report-section"><h2>客户与订单信息</h2><dl class="order-facts">${[['国家或地区', order.country], ['订单金额', money(order.amount)], ['付款方式', order.payment], ['合作年限', `${order.years} 年`], ['历史逾期', `${order.overdue} 次`], ['订单创建日期', order.date]].map(([k, v]) => `<div><dt>${k}</dt><dd>${escapeHTML(v)}</dd></div>`).join('')}</dl><h3>备注</h3><p class="order-notes">${escapeHTML(order.notes || '无')}</p></section><section class="panel report-section"><h2>评分依据</h2><div class="table-scroll"><table><thead><tr><th>评分项目</th><th>命中规则</th><th>得分</th></tr></thead><tbody>${result.details.map(d => `<tr><td>${d.title}</td><td>${d.label}</td><td>${d.points} 分</td></tr>`).join('')}</tbody></table></div><p class="score-formula">原始合计 ${result.details.map(d => d.points).join(' + ')} = ${result.rawScore} 分；上限 ${RiskEngine.config.cap} 分，最终 ${result.score} 分。</p></section><div class="rules-grid"><section class="panel report-section"><h2>主要风险因素</h2>${result.factors.length ? list(result.factors) : '<p class="muted">未触发额外提示；基础金额项仍计分，不代表没有交易风险。</p>'}</section><section class="panel report-section"><h2>人工复核建议</h2><p class="review-priority">${result.priority}</p>${list(result.advice)}</section></div>`;
+}
