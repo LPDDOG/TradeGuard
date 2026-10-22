@@ -83,7 +83,7 @@ node scripts/check-release.cjs
 
 ## GitHub Pages 部署
 
-本项目无需构建。推荐发布源为 `main` 分支的仓库根目录；`index.html` 和 `assets/` 必须保持同级。当前没有关联远程仓库，未提交、上传或发布，文档中没有虚构线上演示链接。
+本项目无需构建。推荐发布源为 `main` 分支的仓库根目录；`index.html` 和 `assets/` 必须保持同级。源码已上传至 [LPDDOG/TradeGuard](https://github.com/LPDDOG/TradeGuard) 的 main 分支；GitHub Pages 尚未启用或验证，文档中没有虚构线上演示链接。
 
 [部署指南](docs/DEPLOYMENT.md)记录了准备情况、GitHub Pages 设置和发布后验收。该指南是备用参考；实际协作时逐步完成，不需要一次执行所有步骤。
 
